@@ -8,27 +8,32 @@
 // One vehicle "seeks"
 // See: http://www.red3d.com/cwr/
 
-let v;
+let v, target;
+let collision;
 
 function setup() {
-  createCanvas(640, 360);
-  v = new Vehicle(width / 2, height / 2);
+  createCanvas(windowWidth, windowHeight);
+  collision = new Collision();
+  v = new Vehicle(width / 2, height - 100 );
+  target = new Target(width / 2, height / 2, 20);
 }
 
 function draw() {
   background(51);
 
-  let mouse = createVector(mouseX, mouseY);
-
-  // Draw an ellipse at the mouse position
-  fill(127);
-  stroke(200);
-  strokeWeight(2);
-  ellipse(mouse.x, mouse.y, 48, 48);
+  if(Collision.isCollide(target,v)) print("Boom!");
+  
+  // Draw the target
+  target.display();
 
   // Call the appropriate steering behaviors for our agents
-  v.seek(mouse);
+  v.seek(target);
   v.update();
   v.display();
 
+}
+
+function windowResized() {
+	resizeCanvas(windowWidth, windowHeight);
+	background(0);
 }
