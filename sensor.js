@@ -2,6 +2,7 @@
 class Sensor {
 
     constructor(pos, state = 0, attachOn, dist) {
+      this.obj_type = 'target';
       this.pos = pos;
       this.state = state;
       this.color;

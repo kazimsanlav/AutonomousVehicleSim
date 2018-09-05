@@ -13,13 +13,18 @@ let v, target;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  
-  v = new Vehicle(width / 2, height - 100);
-  target = new Target(width / 2, height / 2, 20);
+
+  v = new Vehicle(width / 2, height / 2);
+  target = new Target(width / 2, height / 2, 30);
 }
 
 function draw() {
   background(51);
+
+  // Add Borders
+  v.addBorder();
+  target.addBorder();
+
   target.update(mouseX, mouseY);
 
   if (Collision.isCollide(target, v)) {
@@ -30,16 +35,9 @@ function draw() {
   target.display();
 
   // Call the appropriate steering behaviors for our agents
-  // v.seek(target);
+  v.search(target);
   v.update();
   v.display();
-
-  // //deneme
-  // //apply this!!!
-  // let vec = p5.Vector.fromAngle(v.velocity.heading());
-  // vec.mult(50);
-  // line(v.pos.x, v.pos.y, v.pos.x + vec.x, v.pos.y + vec.y);
-  // //deneme
 
 }
 

@@ -2,19 +2,21 @@
 
 class Vehicle {
   constructor(x, y) {
+    this.obj_type = 'vehicle';
     this.acceleration = createVector(0, 0);
     this.velocity = createVector(0, -0.001);
     this.pos = createVector(x, y);
     this.r = 6;
-    this.maxspeed = 8;
-    this.maxforce = 0.2;
-    this.sensors = this.assingSensors(50);
+    this.maxspeed = 5;
+    this.maxforce = 0.1;
+    this.sensors = this.assingSensors(100);
   }
 
   assingSensors(dist) {
     let sensors = [];
+    let ang = 1;
 
-    for (let i = -PI / 3; i < PI / 3; i += PI / 12) {
+    for (let i = -PI / ang; i < PI / ang; i += PI / 8) {
       let v = p5.Vector.fromAngle(this.velocity.heading() + i);
       v.mult(dist);
       v.add(this.pos);
@@ -30,6 +32,7 @@ class Vehicle {
 
   // Method to update location
   update() {
+
     // Update velocity
     this.velocity.add(this.acceleration);
     // Limit speed
@@ -37,7 +40,8 @@ class Vehicle {
     this.pos.add(this.velocity);
     // Reset accelerationelertion to 0 each cycle
     this.acceleration.mult(0);
-
+    // Slowdown in time
+    this.velocity.mult(0.98);
   }
 
   applyForce(force) {
@@ -47,9 +51,20 @@ class Vehicle {
 
   // A method that calculates a steering force towards a target
   // STEER = DESIRED MINUS VELOCITY
-  seek(target) {
 
-    var desired = p5.Vector.sub(target.pos, this.pos); // A vector pointing from the location to the target
+  search(target) {
+    for (let sensor of this.sensors) {
+      if (sensor.state == 1){
+        this.seek(sensor);
+        // this.seek(target);
+
+      }
+    }
+  }
+
+  seek(target) {
+    // A vector pointing from the location to the target
+    var desired = p5.Vector.sub(target.pos, this.pos);
 
     // Scale to maximum speed
     desired.setMag(this.maxspeed);
@@ -62,8 +77,6 @@ class Vehicle {
   }
 
   display() {
-
-
 
     // Draw a triangle rotated in the direction of velocity
     var theta = this.velocity.heading() + PI / 2;
@@ -81,6 +94,7 @@ class Vehicle {
     endShape(CLOSE);
     pop();
 
+    //Also show attached sensors 
     this.showSensors();
   }
 
