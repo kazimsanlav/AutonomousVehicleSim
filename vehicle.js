@@ -1,7 +1,3 @@
-// The Nature of Code
-// Daniel Shiffman
-// http://natureofcode.com
-
 // The "Vehicle" class
 
 class Vehicle {
@@ -12,6 +8,24 @@ class Vehicle {
     this.r = 6;
     this.maxspeed = 8;
     this.maxforce = 0.2;
+    this.sensors = this.assingSensors()
+  }
+
+  assingSensors() {
+    let sensors = [];
+
+    for (let i = -PI / 3; i < PI / 3; i += PI / 12) {
+      let v = p5.Vector.fromAngle(this.velocity.heading() + i);
+      v.mult(50);
+      v.add(this.pos);
+      point(v.x, v.y);
+
+      let s = new Sensor(createVector(v.x, v.y), 0, this);
+      s.angle = i;
+      sensors.push(s);
+    }
+
+    return sensors;
   }
 
   // Method to update location
@@ -23,6 +37,7 @@ class Vehicle {
     this.pos.add(this.velocity);
     // Reset accelerationelertion to 0 each cycle
     this.acceleration.mult(0);
+
   }
 
   applyForce(force) {
@@ -47,8 +62,11 @@ class Vehicle {
   }
 
   display() {
+
+
+
     // Draw a triangle rotated in the direction of velocity
-    var theta = this.velocity.heading() + PI/2;
+    var theta = this.velocity.heading() + PI / 2;
     fill(127);
     stroke(200);
     strokeWeight(2);
@@ -62,34 +80,15 @@ class Vehicle {
     vertex(this.r, this.r * 2);
     endShape(CLOSE);
     pop();
-    
-    this.see();
+
+    this.showSensors();
   }
 
-  see() {
-
-    let theta = this.velocity.heading() + PI/2;
-
-    fill('red');
-    // noStroke();
-    stroke(255);
-    strokeWeight(2);
-    push();
-    translate(this.pos.x , this.pos.y - 2*this.r);
-    rotate(theta);
-    beginShape();
-
-    // sensors
-    push()
-    for(let i = -PI/3 ; i < PI/3 ; i+= PI/20){ 
-      rotate(i);
-      stroke('green');
-      point(0,-50);
-      rotate(-i);
+  showSensors() {
+    for (let s of this.sensors) {
+      s.update();
+      s.display();
     }
-    pop()
-    
-    endShape();
-    pop();
   }
 }
+
