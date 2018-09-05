@@ -8,19 +8,19 @@ class Vehicle {
     this.r = 6;
     this.maxspeed = 8;
     this.maxforce = 0.2;
-    this.sensors = this.assingSensors()
+    this.sensors = this.assingSensors(50);
   }
 
-  assingSensors() {
+  assingSensors(dist) {
     let sensors = [];
 
     for (let i = -PI / 3; i < PI / 3; i += PI / 12) {
       let v = p5.Vector.fromAngle(this.velocity.heading() + i);
-      v.mult(50);
+      v.mult(dist);
       v.add(this.pos);
       point(v.x, v.y);
 
-      let s = new Sensor(createVector(v.x, v.y), 0, this);
+      let s = new Sensor(createVector(v.x, v.y), 0, this, dist);
       s.angle = i;
       sensors.push(s);
     }

@@ -30,7 +30,7 @@ function draw() {
   target.display();
 
   // Call the appropriate steering behaviors for our agents
-  v.seek(target);
+  // v.seek(target);
   v.update();
   v.display();
 
