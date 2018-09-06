@@ -1,13 +1,14 @@
 // The "Vehicle" class
 
 class Vehicle {
+
   constructor(x, y) {
     this.obj_type = 'vehicle';
     this.acceleration = createVector(0, 0);
     this.velocity = createVector(1,1);
     this.pos = createVector(x, y);
     this.r = 6;
-    this.health = 256;
+    this.health = 255;
     this.maxspeed = 3;
     this.maxforce = 0.1;
     this.sensors = this.assingSensors(100);
@@ -62,6 +63,9 @@ class Vehicle {
     this.acceleration.mult(0);
     // Slowdown in time
     // this.velocity.mult(0.98);
+
+    // Die slowly
+    this.health -= 0.5;
   }
 
   applyForce(force) {
@@ -120,7 +124,9 @@ class Vehicle {
 
     // Draw a triangle rotated in the direction of velocity
     var theta = this.velocity.heading() + PI / 2;
-    fill(127);
+
+    let clr = lerpColor(color(255,0,0), color(0,255,0), this.health/255);
+    fill(clr);
     stroke(200);
     strokeWeight(2);
 
@@ -150,4 +156,5 @@ class Vehicle {
     dir.mult(force);
     this.applyForce(dir);
   }
+
 }
