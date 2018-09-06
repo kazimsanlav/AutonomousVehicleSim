@@ -1,5 +1,4 @@
 // The "Vehicle" class
-
 class Vehicle {
 
   constructor(x, y) {
@@ -10,7 +9,7 @@ class Vehicle {
     this.r = 6;
     this.health = 255;
     this.maxspeed = 0.2;
-    this.maxforce = 0.1;
+    this.maxforce = 0.05;
     this.sensors = this.assingSensors(100);
   }
 
@@ -18,16 +17,16 @@ class Vehicle {
     let sensors = [];
     let ang = 3;
 
-    for (let i = -PI / ang; i < PI / ang; i += PI / 8) {
+    for (let i = -PI / ang; i < PI / ang; i += PI / 9) {
       //Outhest loop
-      let v3 = p5.Vector.fromAngle(this.velocity.heading() + i);
-      v3.mult(1.5 * dist);
-      v3.add(this.pos);
-      point(v3.x, v3.y);
+      // let v3 = p5.Vector.fromAngle(this.velocity.heading() + i);
+      // v3.mult(1.5 * dist);
+      // v3.add(this.pos);
+      // point(v3.x, v3.y);
 
-      let s3 = new Sensor(createVector(v3.x, v3.y), 0, this, 1.5 * dist);
-      s3.angle = i;
-      sensors.push(s3);
+      // let s3 = new Sensor(createVector(v3.x, v3.y), 0, this, 1.5 * dist);
+      // s3.angle = i;
+      // sensors.push(s3);
       //Outher loop
       let v = p5.Vector.fromAngle(this.velocity.heading() + i);
       v.mult(dist);
@@ -66,6 +65,7 @@ class Vehicle {
 
     // Die slowly
     this.health -= 0.05;
+    // constrain(this.health, 0 , 255);
   }
 
   applyForce(force) {
@@ -81,8 +81,7 @@ class Vehicle {
     for (let sensor of this.sensors) {
       if (sensor.state == 1) {
         found = true;
-        this.arrive(sensor);
-        // this.seek(target);
+        this.seek(sensor);
       }
     }
     if(!found){
@@ -91,20 +90,6 @@ class Vehicle {
   }
 
   seek(target) {
-    // A vector pointing from the location to the target
-    var desired = p5.Vector.sub(target.pos, this.pos);
-
-    // Scale to maximum speed
-    desired.setMag(this.maxspeed);
-
-    // Steering = Desired minus velocity
-    var steer = p5.Vector.sub(desired, this.velocity);
-    steer.add(target.velocity); // Arrive Motion
-
-    this.applyForce(steer);
-  }
-
-  arrive(target) {
     // A vector pointing from the location to the target
     var desired = p5.Vector.sub(target.pos, this.pos);
 
@@ -140,13 +125,15 @@ class Vehicle {
     pop();
 
     //Also show attached sensors 
-    // this.showSensors(target);
+    this.showSensors(target);
   }
 
   showSensors(target) {
     for (let s of this.sensors) {
       s.update(target);
-      s.display();
+      if(showsensor_switch.checked()){
+        s.display();
+      }
     }
   }
   
