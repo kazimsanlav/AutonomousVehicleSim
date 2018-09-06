@@ -126,8 +126,8 @@ class Vehicle {
 
     let clr = lerpColor(color(255,0,0), color(0,255,0), this.health/255);
     fill(clr);
-    stroke(200);
-    strokeWeight(2);
+    // stroke(200);
+    // strokeWeight(2);
 
     push();
     translate(this.pos.x, this.pos.y);

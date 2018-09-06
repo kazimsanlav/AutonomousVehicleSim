@@ -1,18 +1,23 @@
 class Target extends Vehicle {
 
-    constructor(x, y, r) {
+    constructor(x, y, r, typ = 'good') {
         super(x, y);
+        this.acceleration = createVector(0, 0);
+        this.velocity = createVector(0, 0);
         this.obj_type = 'target';
+        this.typ = typ
         this.r = r;
+        this.clr = (this.typ == 'good') ? color('green') : color('red');
         this.maxspeed = 3;
         this.noiseseed = random(10000);
     }
 
     display() {
-        this.noisyMove();
-        fill(100);
-        stroke(255);
-        strokeWeight(2);
+        // this.noisyMove();
+        fill(this.clr);
+        // stroke(255);
+        // strokeWeight(2);
+        noStroke();
         push()
         translate(this.pos.x, this.pos.y);
         ellipse(0, 0, 2 * this.r);

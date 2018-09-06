@@ -12,9 +12,9 @@ class Simulation {
         }
     }
 
-    addTargets(count) {
+    addTargets(count, typ) {
         for (let i = 0; i < count; i++) {
-            this.targets.push(new Target(random(width), random(height), 20));
+            this.targets.push(new Target(random(width), random(height), 5, typ));
         }
     }
 
