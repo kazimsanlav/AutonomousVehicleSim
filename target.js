@@ -4,6 +4,7 @@ class Target extends Vehicle {
         super(x, y);
         this.obj_type = 'target';
         this.r = r;
+        this.maxspeed = 3;
         this.noiseseed = random(10000);
     }
 
@@ -21,7 +22,7 @@ class Target extends Vehicle {
     update(x, y) {
         // this.pos = createVector(x, y);
         super.update();
-        this.velocity.limit(this.maxspeed/4);
+        this.velocity.limit(this.maxspeed);
 
     }
 

@@ -20,7 +20,7 @@ class Simulation {
 
     run() {
         for (let vehicle of this.vehicles) {
-            vehicle.addBorder('boncyBorders', 50);
+            vehicle.addBorder();
 
             for (let target of this.targets) {
                 target.addBorder();

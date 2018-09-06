@@ -4,11 +4,11 @@ class Vehicle {
   constructor(x, y) {
     this.obj_type = 'vehicle';
     this.acceleration = createVector(0, 0);
-    this.velocity = createVector(0, -0.001);
+    this.velocity = createVector(1,1);
     this.pos = createVector(x, y);
     this.r = 6;
     this.health = 256;
-    this.maxspeed = 1;
+    this.maxspeed = 3;
     this.maxforce = 0.1;
     this.sensors = this.assingSensors(100);
   }
@@ -61,7 +61,7 @@ class Vehicle {
     // Reset accelerationelertion to 0 each cycle
     this.acceleration.mult(0);
     // Slowdown in time
-    this.velocity.mult(0.98);
+    // this.velocity.mult(0.98);
   }
 
   applyForce(force) {
@@ -73,12 +73,17 @@ class Vehicle {
   // STEER = DESIRED MINUS VELOCITY
 
   search(target) {
+    let found = false;
     for (let sensor of this.sensors) {
       if (sensor.state == 1) {
+        found = true;
         this.arrive(sensor);
         // this.seek(target);
 
       }
+    }
+    if(!found){
+      // this.move(PI/3, random(0.1));
     }
   }
 
@@ -139,5 +144,10 @@ class Vehicle {
       s.display();
     }
   }
+  
+  move(direction, force){
+    let dir = p5.Vector.fromAngle(direction);
+    dir.mult(force);
+    this.applyForce(dir);
+  }
 }
-
