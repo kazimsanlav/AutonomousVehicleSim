@@ -8,38 +8,21 @@
 // One vehicle "seeks"
 // See: http://www.red3d.com/cwr/
 
-let v, target;
+// let v, target;
+let simulation;
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
-  v = new Vehicle(width / 2, height / 2);
-  target = new Target(width / 2, height / 2, 30);
+  simulation = new Simulation();
+  simulation.addTargets(1);
+  simulation.addVehicles(1);
 }
 
 function draw() {
   background(51);
-
-  // Add Borders
-  v.addBorder();
-  target.addBorder();
-
-  target.update(mouseX, mouseY);
-
-  if (Collision.isCollide(target, v)) {
-    print("Boom!");
-  }
-
-  // Draw the target
-  target.display();
-
-  // Call the appropriate steering behaviors for our agents
-  v.search(target);
-  v.update();
-  v.display();
-
-}
+  simulation.run();
+ }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);

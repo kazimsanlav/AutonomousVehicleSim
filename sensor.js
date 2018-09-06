@@ -2,7 +2,7 @@
 class Sensor {
 
     constructor(pos, state = 0, attachOn, dist) {
-      this.obj_type = 'target';
+      this.obj_type = 'sensor';
       this.pos = pos;
       this.state = state;
       this.color;
@@ -20,7 +20,7 @@ class Sensor {
       }
     }
   
-    update() {
+    update(target) {
 
       if(Collision.isCollide(this, target)){
         this.state = 1;

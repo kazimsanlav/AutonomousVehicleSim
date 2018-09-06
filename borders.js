@@ -1,19 +1,20 @@
-Vehicle.prototype.addBorder = function (border = 'boncyBorders') {
+Vehicle.prototype.addBorder = function (border = 'boncyBorders', off = 0) {
     if (border === 'boncyBorders') {
-        if (this.pos.x > width - this.r) {
-            this.pos.x = width - this.r;
+        let offset = this.r + off;
+        if (this.pos.x > width - offset) {
+            this.pos.x = width - offset;
             this.velocity.x *= -1;
         }
-        if (this.pos.x < this.r) {
-            this.pos.x = this.r;
+        if (this.pos.x < offset) {
+            this.pos.x = offset;
             this.velocity.x *= -1;
         }
-        if (this.pos.y > height - this.r) {
-            this.pos.y = height - this.r;
+        if (this.pos.y > height - offset) {
+            this.pos.y = height - offset;
             this.velocity.y *= -1;
         }
-        if (this.pos.y < this.r) {
-            this.pos.y = this.r;
+        if (this.pos.y < offset) {
+            this.pos.y = offset;
             this.velocity.y *= -1;
         }
     };

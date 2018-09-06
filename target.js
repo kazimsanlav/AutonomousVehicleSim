@@ -4,6 +4,7 @@ class Target extends Vehicle {
         super(x, y);
         this.obj_type = 'target';
         this.r = r;
+        this.noiseseed = random(10000);
     }
 
     display() {
@@ -20,7 +21,7 @@ class Target extends Vehicle {
     update(x, y) {
         // this.pos = createVector(x, y);
         super.update();
-        this.velocity.limit(this.maxspeed/2);
+        this.velocity.limit(this.maxspeed/4);
 
     }
 
@@ -29,7 +30,7 @@ class Target extends Vehicle {
         let magn = 2;
 
         let force = [createVector(map(noise(k), 0, 1, -magn, magn),
-            map(noise(k + 1000), 0, 1, -magn, magn))];
+            map(noise(k + this.noiseseed), 0, 1, -magn, magn))];
 
         this.applyForce(force[0], force[1]);
     }
