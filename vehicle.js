@@ -9,7 +9,7 @@ class Vehicle {
     this.pos = createVector(x, y);
     this.r = 6;
     this.health = 255;
-    this.maxspeed = 3;
+    this.maxspeed = 0.2;
     this.maxforce = 0.1;
     this.sensors = this.assingSensors(100);
   }
@@ -65,7 +65,7 @@ class Vehicle {
     // this.velocity.mult(0.98);
 
     // Die slowly
-    this.health -= 0.5;
+    this.health -= 0.05;
   }
 
   applyForce(force) {
@@ -83,7 +83,6 @@ class Vehicle {
         found = true;
         this.arrive(sensor);
         // this.seek(target);
-
       }
     }
     if(!found){
@@ -141,7 +140,7 @@ class Vehicle {
     pop();
 
     //Also show attached sensors 
-    this.showSensors(target);
+    // this.showSensors(target);
   }
 
   showSensors(target) {

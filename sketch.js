@@ -5,8 +5,8 @@ let simulation;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   simulation = new Simulation();
-  simulation.addTargets(1);
-  simulation.addVehicles(3);
+  simulation.addTargets(10);
+  simulation.addVehicles(5);
 }
 
 function draw() {
