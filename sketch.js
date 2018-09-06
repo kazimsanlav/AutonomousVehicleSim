@@ -8,8 +8,8 @@ function setup() {
   showsensor_switch = createCheckbox('ShowSensor');
   simulation = new Simulation();
   simulation.addTargets(10);
-  simulation.addTargets(10, 'bad');
-  simulation.addVehicles(3);
+  simulation.addTargets(7, 'bad');
+  simulation.addVehicles(10);
 }
 
 function draw() {

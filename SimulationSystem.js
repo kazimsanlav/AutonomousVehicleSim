@@ -21,7 +21,7 @@ class Simulation {
     reproduceVehicle() {
         for (const vehicle of this.vehicles) {
             let r = random();
-            if (r < 0.007*(1 - vehicle.health/255)) {
+            if (r < 0.001) {
                 this.vehicles.push(vehicle.copyVec());
             }
         }
@@ -31,7 +31,7 @@ class Simulation {
         let r = random();
         if (r < 0.01) {
             this.targets.push(new Target(random(width), random(height), 5, 'good'));
-        }else if (r < 0.03) {
+        }else if (r < 0.05) {
             this.targets.push(new Target(random(width), random(height), 5, 'bad'));
         }
     }
@@ -50,7 +50,9 @@ class Simulation {
                 // Kill vechile and put target instead
                 if (vehicle.health < 0) {
                     this.vehicles.splice(j, 1);
-                    this.targets.push(new Target(vehicle.pos.x, vehicle.pos.y, 5, 'good'));
+                    if(random()<0.7){
+                        this.targets.push(new Target(vehicle.pos.x, vehicle.pos.y, 5, 'good'));
+                    }
                 }
                 vehicle.addBorder();
                 // Call the appropriate steering behaviors for our agents
@@ -63,7 +65,7 @@ class Simulation {
                         vehicle.health += 25;
                         // print("Boom!");
                     } else {
-                        vehicle.health -= 50;
+                        vehicle.health -= 30;
                         // print("Opps!");
                     }
                     this.targets.splice(i, 1);
