@@ -18,9 +18,9 @@ class Simulation {
         }
     }
 
-    reproduceVehicle(){
+    reproduceVehicle() {
         for (const vehicle of this.vehicles) {
-            if(random() < 0.003){
+            if (random() < 0.003) {
                 this.vehicles.push(vehicle.copyVec());
             }
         }
@@ -42,7 +42,11 @@ class Simulation {
                 vehicle.display(target);
 
                 if (Collision.isCollide(target, vehicle)) {
-                    print("Boom!");
+                    if (target.typ == 'good') {
+                        print("Boom!");
+                    } else {
+                        print("Opps!");
+                    }
                 }
             }
         }

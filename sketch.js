@@ -6,7 +6,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   simulation = new Simulation();
   simulation.addTargets(10);
-  simulation.addTargets(5, 'bad');
+  simulation.addTargets(10, 'bad');
   simulation.addVehicles(5);
 }
 
