@@ -18,6 +18,14 @@ class Simulation {
         }
     }
 
+    reproduceVehicle(){
+        for (const vehicle of this.vehicles) {
+            if(random() < 0.003){
+                this.vehicles.push(vehicle.copyVec());
+            }
+        }
+    }
+
     run() {
         this.vehicles = this.vehicles.filter(v => v.health > 0);
 

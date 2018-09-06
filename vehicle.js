@@ -156,4 +156,8 @@ class Vehicle {
     this.applyForce(dir);
   }
 
+  copyVec(){
+    return new Vehicle(this.pos.x, this.pos.y);
+  }
+
 }

@@ -12,6 +12,7 @@ function setup() {
 
 function draw() {
   background(51);
+  simulation.reproduceVehicle();
   simulation.run();
  }
 
