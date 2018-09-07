@@ -1,5 +1,7 @@
-
+let maxgen = 0;
+let maxfitness = 0;
 class Simulation {
+
 
     constructor() {
         this.vehicles = [];
@@ -22,16 +24,24 @@ class Simulation {
         for (const vehicle of this.vehicles) {
             let r = random();
             if (r < 0.001) {
-                this.vehicles.push(vehicle.copyVec());
+                let dna = new DNA([
+                    vehicle.maxspeed,
+                    vehicle.maxforce,
+                    vehicle.seekgood,
+                    vehicle.seekbad,
+                    vehicle.generation + 1,
+                ])
+                dna.mutation();
+                this.vehicles.push(vehicle.copyVec(dna));
             }
         }
     }
 
     reproduceTarget() {
         let r = random();
-        if (r < 0.01) {
+        if (r < 0.05) {
             this.targets.push(new Target(random(width), random(height), 5, 'good'));
-        }else if (r < 0.06) {
+        } else if (r < 0.1) {
             this.targets.push(new Target(random(width), random(height), 5, 'bad'));
         }
     }
@@ -46,11 +56,18 @@ class Simulation {
 
             for (let j = this.vehicles.length - 1; j >= 0; j--) {
                 let vehicle = this.vehicles[j];
+                if(vehicle.generation > maxgen){
+                    maxgen = vehicle.generation;
+                }
+                if(vehicle.counter > maxfitness){
+                    maxfitness = vehicle.counter;
+                }
+                
 
                 // Kill vechile and put target instead
                 if (vehicle.health < 0) {
                     this.vehicles.splice(j, 1);
-                    if(random()<0.7){
+                    if (random() < 0.7) {
                         this.targets.push(new Target(vehicle.pos.x, vehicle.pos.y, 5, 'good'));
                     }
                 }

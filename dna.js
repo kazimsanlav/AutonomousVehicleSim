@@ -2,15 +2,16 @@ let mutationrate = 0.5;
 
 class DNA {
 
-    constructor(gene = []) {
+    constructor(gene) {
         this.gene = gene;
     }
 
     mutation() {
-
-        for (let i = 0; i < this.gene.length; i++) {
-            if (random() < mutationrate) {
-                this.gene[i] += random(-1, 1);
+        // console.log('mutation');
+        for (let i = 0; i < this.gene.length - 1; i++) {
+            if (random() < mutationrate) {    
+                if(i < 3) this.gene[i] += random(0.01)*random([-1,1]);
+                if(i >= 3) this.gene[i] += random(0.01)*random([-1,1]);
             }
         }
 

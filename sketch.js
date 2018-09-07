@@ -1,6 +1,7 @@
 
 let simulation;
 let showsensor_switch;
+let maxgen_text, maxfitness_text;
 
 
 function setup() {
@@ -14,6 +15,9 @@ function setup() {
 
 function draw() {
   background(51);
+  fill('white');
+  maxgen_text = text('Max Genration: '+ maxgen, 10, 15);
+  maxgen_text = text('Max Fitness: '+ maxfitness, 10, 30);
   simulation.reproduceVehicle();
   simulation.reproduceTarget();
   simulation.run();

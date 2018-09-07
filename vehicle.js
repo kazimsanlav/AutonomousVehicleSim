@@ -1,17 +1,28 @@
 // The "Vehicle" class
 class Vehicle {
 
-  constructor(x, y) {
+  constructor(x, y, dna = null) {
+
+    if(dna){
+      this.maxspeed = dna.gene[0];
+      this.maxforce = dna.gene[1];
+      this.seekgood = dna.gene[2];
+      this.seekbad  = dna.gene[3];
+      this.generation = dna.gene[4];
+    }else{
+      this.maxspeed = random(0.01,2); //0.2;
+      this.maxforce = random(0.01,2); //0.05;
+      this.seekgood = random(-2,2);
+      this.seekbad = random(-2,2);
+      this.generation = 1;
+    }
+    this.counter = 0;
+    this.velocity = p5.Vector.random2D();
     this.obj_type = 'vehicle';
     this.acceleration = createVector(0, 0);
-    this.velocity = createVector(1, 1);
     this.pos = createVector(x, y);
     this.r = 6;
     this.health = 255;
-    this.maxspeed = random(0.01,1); //0.2;
-    this.maxforce = random(0.01,1); //0.05;
-    this.seekgood = random(-2,2);
-    this.seekbad = random(-2,2);
     this.sensors = this.assingSensors(100);
   }
 
@@ -54,7 +65,11 @@ class Vehicle {
 
   // Method to update location
   update() {
+    // constrain(this.maxforce, 0, 1);
+    // constrain(this.maxspeed, 0, 1);
 
+    // Counter increase
+    this.counter ++;
     // Update velocity
     this.velocity.add(this.acceleration);
     // Limit speed
@@ -155,8 +170,8 @@ class Vehicle {
     this.applyForce(dir);
   }
 
-  copyVec() {
-    return new Vehicle(this.pos.x, this.pos.y);
+  copyVec(dna) {
+    return new Vehicle(this.pos.x, this.pos.y, dna);
   }
 
 }
