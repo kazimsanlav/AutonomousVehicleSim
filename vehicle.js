@@ -10,8 +10,8 @@ class Vehicle {
       this.seekbad  = dna.gene[3];
       this.generation = dna.gene[4];
     }else{
-      this.maxspeed = random(0.01,2); //0.2;
-      this.maxforce = random(0.01,2); //0.05;
+      this.maxspeed = random(0.01,1); //0.2;
+      this.maxforce = random(0.01,1); //0.05;
       this.seekgood = random(-2,2);
       this.seekbad = random(-2,2);
       this.generation = 1;
@@ -65,8 +65,8 @@ class Vehicle {
 
   // Method to update location
   update() {
-    // constrain(this.maxforce, 0, 1);
-    // constrain(this.maxspeed, 0, 1);
+    constrain(this.maxforce, 0, 1);
+    constrain(this.maxspeed, 0, 1);
 
     // Counter increase
     this.counter ++;
@@ -81,7 +81,7 @@ class Vehicle {
     // this.velocity.mult(0.98);
 
     // Die slowly
-    this.health -= 0.05;
+    this.health -= 0.1;
     // constrain(this.health, 0 , 255);
   }
 

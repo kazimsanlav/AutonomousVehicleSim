@@ -39,9 +39,9 @@ class Simulation {
 
     reproduceTarget() {
         let r = random();
-        if (r < 0.05) {
+        if (r < 0.05 * (10 / this.vehicles.length)) {
             this.targets.push(new Target(random(width), random(height), 5, 'good'));
-        } else if (r < 0.1) {
+        } else if (r < 0.07 * (10 / this.vehicles.length)) {
             this.targets.push(new Target(random(width), random(height), 5, 'bad'));
         }
     }
@@ -54,15 +54,22 @@ class Simulation {
             target.update();
             target.display();
 
+            let v = null;
             for (let j = this.vehicles.length - 1; j >= 0; j--) {
+                let maxf = 0;
+
                 let vehicle = this.vehicles[j];
-                if(vehicle.generation > maxgen){
+                if (vehicle.generation > maxgen) {
                     maxgen = vehicle.generation;
                 }
-                if(vehicle.counter > maxfitness){
+                if (vehicle.counter > maxfitness) {
                     maxfitness = vehicle.counter;
                 }
-                
+                if (vehicle.counter > maxf) {
+                    maxf = vehicle.counter;
+                    v = vehicle;
+                }
+
 
                 // Kill vechile and put target instead
                 if (vehicle.health < 0) {
@@ -88,6 +95,15 @@ class Simulation {
                     this.targets.splice(i, 1);
                 }
             }
+            if (v) {
+                push()
+                noFill();
+                stroke('white');
+                ellipse(v.pos.x, v.pos.y, 30);
+                pop();
+            }
+
+
         }
     }
 

@@ -10,7 +10,7 @@ function setup() {
   simulation = new Simulation();
   simulation.addTargets(10);
   simulation.addTargets(7, 'bad');
-  simulation.addVehicles(10);
+  simulation.addVehicles(30);
 }
 
 function draw() {
