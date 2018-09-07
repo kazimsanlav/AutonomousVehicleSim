@@ -4,29 +4,31 @@ class Vehicle {
   constructor(x, y) {
     this.obj_type = 'vehicle';
     this.acceleration = createVector(0, 0);
-    this.velocity = createVector(1,1);
+    this.velocity = createVector(1, 1);
     this.pos = createVector(x, y);
     this.r = 6;
     this.health = 255;
-    this.maxspeed = 0.2;
-    this.maxforce = 0.05;
+    this.maxspeed = random(0.01,1); //0.2;
+    this.maxforce = random(0.01,1); //0.05;
+    this.seekgood = random(-2,2);
+    this.seekbad = random(-2,2);
     this.sensors = this.assingSensors(100);
   }
 
-  assingSensors(dist) {
+  assingSensors(dist , ang = 3, freq = 21) {
     let sensors = [];
-    let ang = 3;
+    // let ang = 3;
 
-    for (let i = -PI / ang; i < PI / ang; i += PI / 9) {
+    for (let i = -PI / ang; i < PI / ang; i += PI / freq) {
       //Outhest loop
-      // let v3 = p5.Vector.fromAngle(this.velocity.heading() + i);
-      // v3.mult(1.5 * dist);
-      // v3.add(this.pos);
-      // point(v3.x, v3.y);
+      let v3 = p5.Vector.fromAngle(this.velocity.heading() + i);
+      v3.mult(1.5 * dist);
+      v3.add(this.pos);
+      point(v3.x, v3.y);
 
-      // let s3 = new Sensor(createVector(v3.x, v3.y), 0, this, 1.5 * dist);
-      // s3.angle = i;
-      // sensors.push(s3);
+      let s3 = new Sensor(createVector(v3.x, v3.y), 0, this, 1.5 * dist);
+      s3.angle = i;
+      sensors.push(s3);
       //Outher loop
       let v = p5.Vector.fromAngle(this.velocity.heading() + i);
       v.mult(dist);
@@ -81,13 +83,22 @@ class Vehicle {
     for (let sensor of this.sensors) {
       if (sensor.state == 1) {
         found = true;
-        this.seek(sensor);
+        if (target.typ == 'good') {
+          let seekforce = this.seek(sensor);
+          seekforce.mult(this.seekgood);
+          this.applyForce(seekforce);
+        }else{
+          let seekforce = this.seek(sensor);
+          seekforce.mult(this.seekbad);
+          this.applyForce(seekforce);
+        }
       }
     }
-    if(!found){
+    if (!found) {
       // this.move(PI/3, random(0.1));
     }
   }
+
 
   seek(target) {
     // A vector pointing from the location to the target
@@ -101,7 +112,8 @@ class Vehicle {
     steer.add(target.velocity); // Arrive Motion
     steer.limit(this.maxforce); // Limit to maximum steering force
 
-    this.applyForce(steer);
+    return steer;
+    // this.applyForce(steer);
   }
 
   display(target) {
@@ -109,7 +121,7 @@ class Vehicle {
     // Draw a triangle rotated in the direction of velocity
     var theta = this.velocity.heading() + PI / 2;
 
-    let clr = lerpColor(color(255,0,0), color(0,255,0), this.health/255);
+    let clr = lerpColor(color(255, 0, 0), color(0, 255, 0), this.health / 255);
     fill(clr);
     // stroke(200);
     // strokeWeight(2);
@@ -131,19 +143,19 @@ class Vehicle {
   showSensors(target) {
     for (let s of this.sensors) {
       s.update(target);
-      if(showsensor_switch.checked()){
+      if (showsensor_switch.checked()) {
         s.display();
       }
     }
   }
-  
-  move(direction, force){
+
+  move(direction, force) {
     let dir = p5.Vector.fromAngle(direction);
     dir.mult(force);
     this.applyForce(dir);
   }
 
-  copyVec(){
+  copyVec() {
     return new Vehicle(this.pos.x, this.pos.y);
   }
 

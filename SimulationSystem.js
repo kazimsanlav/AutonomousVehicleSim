@@ -31,7 +31,7 @@ class Simulation {
         let r = random();
         if (r < 0.01) {
             this.targets.push(new Target(random(width), random(height), 5, 'good'));
-        }else if (r < 0.05) {
+        }else if (r < 0.06) {
             this.targets.push(new Target(random(width), random(height), 5, 'bad'));
         }
     }
@@ -62,10 +62,10 @@ class Simulation {
 
                 if (Collision.isCollide(target, vehicle)) {
                     if (target.typ == 'good') {
-                        vehicle.health += 25;
+                        vehicle.health += 35;
                         // print("Boom!");
                     } else {
-                        vehicle.health -= 30;
+                        vehicle.health -= 20;
                         // print("Opps!");
                     }
                     this.targets.splice(i, 1);
