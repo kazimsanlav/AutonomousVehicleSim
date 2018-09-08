@@ -17,7 +17,8 @@ function draw() {
   background(51);
   fill('white');
   maxgen_text = text('Max Genration: '+ maxgen, 10, 15);
-  maxgen_text = text('Max Fitness: '+ maxfitness, 10, 30);
+  maxfitness_text = text('Max Fitness: '+ maxfitness, 10, 30);
+  text('FrameRate: '+ floor(frameRate()) , 10, 45);
   simulation.reproduceVehicle();
   simulation.reproduceTarget();
   simulation.run();
