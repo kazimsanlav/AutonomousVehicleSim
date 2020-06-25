@@ -1,3 +1,10 @@
+const HEALTH_PLUS = 30;
+const HEALTH_MINUS = 40;
+const NEW_TARGET_PROB = 0.5;
+const NEW_VEHICLE_CONST = 0.1;
+const AGING_CONST = 0.07;
+const TARGET_THRESHOLD = 50;
+
 let maxgen = 0;
 let maxfitness = 0;
 class Simulation {
@@ -21,9 +28,11 @@ class Simulation {
     }
 
     reproduceVehicle() {
+
+
         for (const vehicle of this.vehicles) {
             let r = random();
-            if (r < 0.001) {
+            if (r < 1 / this.vehicles.length * NEW_VEHICLE_CONST) {
                 let dna = new DNA([
                     vehicle.maxspeed,
                     vehicle.maxforce,
@@ -39,9 +48,9 @@ class Simulation {
 
     reproduceTarget() {
         let r = random();
-        if (r < 0.05 * (10 / this.vehicles.length)) {
+        if (r < 0.05 * (10 / this.targets.length)) {
             this.targets.push(new Target(random(width), random(height), 5, 'good'));
-        } else if (r < 0.07 * (10 / this.vehicles.length)) {
+        } else if (r < 0.07 * (10 / this.targets.length)) {
             this.targets.push(new Target(random(width), random(height), 5, 'bad'));
         }
     }
@@ -74,22 +83,28 @@ class Simulation {
                 // Kill vechile and put target instead
                 if (vehicle.health < 0) {
                     this.vehicles.splice(j, 1);
-                    if (random() < 0.7) {
+                    if (random() < 1 / this.targets.length * NEW_TARGET_PROB) {
                         this.targets.push(new Target(vehicle.pos.x, vehicle.pos.y, 5, 'good'));
                     }
+                    if (this.targets.length > TARGET_THRESHOLD) {
+                        if (random() < this.targets.length * NEW_TARGET_PROB / 10) {
+                            this.targets.shift();
+                        }
+                    }
+
                 }
                 vehicle.addBorder();
                 // Call the appropriate steering behaviors for our agents
                 vehicle.search(target);
-                vehicle.update();
+                vehicle.update(log(this.vehicles.length) * AGING_CONST);
                 vehicle.display(target);
 
                 if (Collision.isCollide(target, vehicle)) {
                     if (target.typ == 'good') {
-                        vehicle.health += 35;
+                        vehicle.health += HEALTH_PLUS;
                         // print("Boom!");
                     } else {
-                        vehicle.health -= 20;
+                        vehicle.health -= HEALTH_MINUS;
                         // print("Opps!");
                     }
                     this.targets.splice(i, 1);
@@ -101,6 +116,7 @@ class Simulation {
                 stroke('white');
                 ellipse(v.pos.x, v.pos.y, 30);
                 pop();
+                v.displayDNA();
             }
 
 

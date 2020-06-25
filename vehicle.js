@@ -3,17 +3,17 @@ class Vehicle {
 
   constructor(x, y, dna = null) {
 
-    if(dna){
+    if (dna) {
       this.maxspeed = dna.gene[0];
       this.maxforce = dna.gene[1];
       this.seekgood = dna.gene[2];
-      this.seekbad  = dna.gene[3];
+      this.seekbad = dna.gene[3];
       this.generation = dna.gene[4];
-    }else{
-      this.maxspeed = random(0.01,1); //0.2;
-      this.maxforce = random(0.01,1); //0.05;
-      this.seekgood = random(-2,2);
-      this.seekbad = random(-2,2);
+    } else {
+      this.maxspeed = random(0.01, 0.3); //0.2;
+      this.maxforce = random(0.01, 0.1); //0.05;
+      this.seekgood = random(-2, 2);
+      this.seekbad = random(-2, 2);
       this.generation = 1;
     }
     this.counter = 0;
@@ -26,7 +26,7 @@ class Vehicle {
     this.sensors = this.assingSensors(100);
   }
 
-  assingSensors(dist , ang = 3, freq = 21) {
+  assingSensors(dist, ang = 3, freq = 21) {
     let sensors = [];
     // let ang = 3;
 
@@ -64,12 +64,12 @@ class Vehicle {
   }
 
   // Method to update location
-  update() {
+  update(aging) {
     constrain(this.maxforce, 0, 1);
     constrain(this.maxspeed, 0, 1);
 
     // Counter increase
-    this.counter ++;
+    this.counter++;
     // Update velocity
     this.velocity.add(this.acceleration);
     // Limit speed
@@ -81,7 +81,7 @@ class Vehicle {
     // this.velocity.mult(0.98);
 
     // Die slowly
-    this.health -= 0.1;
+    this.health -= aging;
     // constrain(this.health, 0 , 255);
   }
 
@@ -102,7 +102,7 @@ class Vehicle {
           let seekforce = this.seek(sensor);
           seekforce.mult(this.seekgood);
           this.applyForce(seekforce);
-        }else{
+        } else {
           let seekforce = this.seek(sensor);
           seekforce.mult(this.seekbad);
           this.applyForce(seekforce);
@@ -162,6 +162,14 @@ class Vehicle {
         s.display();
       }
     }
+  }
+
+  displayDNA() {
+    fill(200);
+    text('Max Speed: ' + this.maxspeed.toFixed(3), 10, 90);
+    text('Max Force: ' + this.maxforce.toFixed(3), 10, 105);
+    text('Seed Good: ' + this.seekgood.toFixed(3), 10, 120);
+    text('Seed Bad: ' + this.seekbad.toFixed(3), 10, 135);
   }
 
   move(direction, force) {
